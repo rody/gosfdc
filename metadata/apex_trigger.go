@@ -25,7 +25,7 @@ func NewApexTriggerFromFile(src string) (ApexTrigger, error) {
 	return trigger, nil
 }
 
-// IsApexTriggerFile returns true if the file is an ApexTrigger metadata file
+// IsApexTriggerFile returns true if the file is an ApexTrigger metadata file.
 func IsApexTriggerFile(src string) bool {
 	return strings.HasSuffix(src, ".trigger-meta.xml")
 }

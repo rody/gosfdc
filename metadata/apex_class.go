@@ -32,7 +32,7 @@ func NewApexClassFromFile(src string) (ApexClass, error) {
 	return class, nil
 }
 
-// IsApexClassFile returns true if the file is an ApexClass metadata file
+// IsApexClassFile returns true if the file is an ApexClass metadata file.
 func IsApexClassFile(src string) bool {
 	return strings.HasSuffix(src, ".cls-meta.xml")
 }
