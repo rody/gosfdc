@@ -33,3 +33,8 @@ func NewCustomLabelsFromFile(src string) (CustomLabels, error) {
 
 	return labels, nil
 }
+
+// IsCustomLabelsFile returns true is the file is a CustomLabels metadata file
+func IsCustomLabelsFile(src string) bool {
+	return strings.HasSuffix(src, ".labels-meta.xml")
+}

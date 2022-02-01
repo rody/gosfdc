@@ -6,14 +6,10 @@ import (
 )
 
 type ApexTrigger struct {
-	APIVersion      string `xml:"apiVersion"`
 	FullName        string
-	PackageVersions []struct {
-		Namespace   string `xml:"namespace"`
-		MajorNumber int    `xml:"majorNumber"`
-		MinorNumber int    `xml:"minorNumber"`
-	} `xml:"packageVersions"`
-	Status string `xml:"status"`
+	APIVersion      float64 `xml:"apiVersion"`
+	PackageVersions []PackageVersion
+	Status          string `xml:"status"`
 }
 
 // NewApexTriggerFromFile reads Apex trigger metadata from a file.
@@ -27,4 +23,9 @@ func NewApexTriggerFromFile(src string) (ApexTrigger, error) {
 	trigger.FullName = strings.TrimSuffix(filepath.Base(src), ".trigger-meta.xml")
 
 	return trigger, nil
+}
+
+// IsApexTriggerFile returns true if the file is an ApexTrigger metadata file
+func IsApexTriggerFile(src string) bool {
+	return strings.HasSuffix(src, ".trigger-meta.xml")
 }
