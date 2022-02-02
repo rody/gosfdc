@@ -2,6 +2,7 @@ package metadata
 
 import (
 	"fmt"
+	"os"
 	"path/filepath"
 	"strings"
 )
@@ -88,7 +89,7 @@ type PicklistValue struct {
 	Default                bool     `xml:"default"`
 }
 
-// NewApexClassFromFile read Apex class metadata from a file.
+// NewCustomFieldFromFile read CustomField metadata from a file.
 func NewCustomFieldFromFile(src string) (CustomField, error) {
 	var field CustomField
 
@@ -98,19 +99,22 @@ func NewCustomFieldFromFile(src string) (CustomField, error) {
 
 	fieldName := strings.TrimSuffix(filepath.Base(src), ".field-meta.xml")
 
-	objectDir, err := filepath.Abs(filepath.Join(filepath.Dir(src), ".."))
+	absPath, err := filepath.Abs(src)
 	if err != nil {
 		return field, fmt.Errorf("could not determine object name for CustomField '%s': %w", fieldName, err)
 	}
 
-	objectDirElements := filepath.SplitList(objectDir)
-	objectName := objectDirElements[len(objectDirElements)-1]
+	pathElements := strings.Split(absPath, string(os.PathSeparator))
+	if len(pathElements) < 3 {
+		return field, fmt.Errorf("cannot determine object directory, current path: '%s'", src)
+	}
+	objectName := pathElements[len(pathElements)-3]
 	field.FullName = fmt.Sprintf("%s.%s", objectName, fieldName)
 
 	return field, nil
 }
 
-// IsApexClassFile returns true if the file is an ApexClass metadata file.
+// IsCustomFieldFile returns true if the file is an CustomField metadata file.
 func IsCustomFieldFile(src string) bool {
 	return strings.HasSuffix(src, ".field-meta.xml")
 }
